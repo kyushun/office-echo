@@ -1,0 +1,25 @@
+{
+    "general": {
+        "optimization": true
+    },
+    "room": {
+        "streaming": true,
+        "updateIntervalSeconds": 300,
+        "autoUpdateUsername": true,
+        "resources": [
+            {
+                "id": "primary",
+                "summary": "自分の予定",
+                "priority": 0
+            }
+        ]
+    },
+    "weather": {
+        "streaming": true,
+        "updateIntervalSeconds": 10800,
+        "openWeatherMapApi": {
+            "locationId": "",
+            "apiKey": ""
+        }
+    }
+}

@@ -1,0 +1,4 @@
+auth/*
+data/calendars/*
+data/users/*
+data/weather/*
