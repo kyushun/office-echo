@@ -7,6 +7,7 @@
 global.config = require('config');
 global.moment = require('moment-timezone');
 moment.tz.setDefault("Asia/Tokyo");
+global.myconsole = require('../routes/lib/consoleWriter');
 
 var app = require('../app');
 var debug = require('debug')('office-echo-server:server');
@@ -24,7 +25,7 @@ app.set('port', port);
  */
 
 process.on('uncaughtException', function(err) {
-  console.log(err);
+  myconsole.log(myconsole.subjects.error, 'Node.js', `An error has occurred - "${err}"`);
 });
 
 /**

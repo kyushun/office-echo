@@ -3,6 +3,7 @@ const req = require("request");
 const { google } = require('googleapis');
 const googleauth = require('./googleauth');
 
+const API_NAME = 'Users_API'
 const RESOURCE_DOMAIN = 'resource.calendar.google.com';
 const FILE_PATH = './storage/data/users/users.json';
 
@@ -21,7 +22,7 @@ exports.getUserName = (email, _name) => {
             }
         }
     } catch (err) {
-        console.log(err);
+        myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
     }
     return name;
 }
@@ -38,7 +39,10 @@ exports.update = (_options, callback) => {
 
     const service = google.admin({ version: 'directory_v1', auth });
     service.users.list(options, (err, res) => {
-        if (err) return console.error('The API returned an error:', err.message);
+        if (err) {
+            myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
+            return;
+        }
 
         const users = res.data.users;
         if (users.length) {
@@ -50,8 +54,12 @@ exports.update = (_options, callback) => {
                 });
             });
 
+            myconsole.log(myconsole.subjects.info, API_NAME, `Users data Updated(${users.length})`);
             fs.writeFile(FILE_PATH, JSON.stringify(json, null, "\t"), (err) => {
-                if (err) return console.log(err);
+                if (err) {
+                    myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
+                    return;
+                }
 
                 if (typeof(callback) == 'function') {
                     callback(json, FILE_PATH);
