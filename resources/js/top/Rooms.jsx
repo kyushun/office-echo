@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 
 const Rooms = observer(class Rooms extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ const Rooms = observer(class Rooms extends React.Component {
             this.setState({
                 lastUpdated: new Date()
             });
-        }, 5 * 1000);
+        }, 1 * 1000);
     }
 
     componentWillUnmount = () => {
@@ -50,7 +51,7 @@ const Rooms = observer(class Rooms extends React.Component {
     }
 
     render() {
-        const cals = this.props.calendarStore.getNormalizedCalendars;
+        const cals = this.props.calendarStore.getNormalizedCalendars();
         const emptyCals = cals.empty;
         const usingCals = cals.using;
 
@@ -61,7 +62,7 @@ const Rooms = observer(class Rooms extends React.Component {
                     {emptyCals.map((cal) => {
                         let event;
                         for (let e of cal.events) {
-                            if (moment().isAfter(e.end)) continue;
+                            if (moment().isSameOrAfter(e.end)) continue;
                             event = e;
                             break;
                         }
@@ -93,12 +94,12 @@ const Rooms = observer(class Rooms extends React.Component {
                         let event;
 
                         for (let e of cal.events) {
-                            if (moment().isAfter(e.end)) continue;
+                            if (moment().isSameOrAfter(e.end)) continue;
                             event = e;
                             break;
                         }
 
-                        const {days, hours, minutes} = this.untilTimeToObject(event.end);
+                        const { days, hours, minutes } = this.untilTimeToObject(event.end);
 
                         return (
                             <div key={cal.id} className="resource">

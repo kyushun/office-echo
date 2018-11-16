@@ -16,25 +16,6 @@ class CalendarStore {
         });
     }
 
-    get getNormalizedCalendars() {
-        var emptyCals = [], usingCals = [];
-        this.calendars.forEach((_cal) => {
-            const cal = toJS(_cal);
-            for (let i = 0; i < cal.events.length; i++) {
-                const e = cal.events[i];
-                if (moment().tz('Asia/Tokyo').isBetween(e.start, e.end)) {
-                    usingCals.push(cal);
-                    return;
-                }
-            }
-            emptyCals.push(cal);
-        });
-        return {
-            empty: emptyCals,
-            using: usingCals
-        };
-    }
-
     get getCalendar() {
         return (id) => {
             var res = [];
@@ -47,6 +28,50 @@ class CalendarStore {
             }
             return res;
         }
+    }
+
+    getNormalizedCalendars = () => {
+        var emptyCals = [], usingCals = [];
+        this.calendars.forEach((_cal) => {
+            const cal = toJS(_cal);
+            for (let i = 0; i < cal.events.length; i++) {
+                const e = cal.events[i];
+                if (moment().isSameOrAfter(e.start) && moment().isBefore(e.end)) {
+                    usingCals.push(cal);
+                    return;
+                }
+            }
+            emptyCals.push(cal);
+        });
+        return {
+            empty: emptyCals,
+            using: usingCals
+        };
+    }
+
+    getNormalizedEvents = (id) => {
+        var summary = null, current = null, follow = [];
+
+        const cal = this.getCalendar(id);
+
+        if (cal.length > 0) {
+            summary = cal[0].summary;
+            cal[0].events.forEach(e => {
+                if (moment().isBefore(e.end)) {
+                    if (moment().isSameOrAfter(e.start)) {
+                        current = e;
+                        return;
+                    }
+                    follow.push(e);
+                }
+            });
+        }
+
+        return {
+            summary: summary,
+            currentEvent: current,
+            followEvents: follow
+        };
     }
 
     setCalendarData = (data) => {
@@ -73,7 +98,6 @@ class CalendarStore {
 
 export default decorate(CalendarStore, {
     calendars: observable,
-    getNormalizedCalendars: computed,
     getCalendar: computed,
     setCalendarData: action
 });
