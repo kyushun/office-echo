@@ -1,7 +1,7 @@
 {
     "name": "Office echo",
-    "short_name": "Oe",
-    "theme_color": "#1e88e5",
+    "short_name": "Office echo",
+    "theme_color": "#FFF",
     "background_color": "#1e88e5",
     "display": "fullscreen",
     "start_url": "/",
