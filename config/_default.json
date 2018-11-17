@@ -21,5 +21,9 @@
             "locationId": "",
             "apiKey": ""
         }
+    },
+    "trainDelays": {
+        "streaming": true,
+        "updateIntervalSeconds": 10800
     }
 }

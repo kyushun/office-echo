@@ -3,6 +3,7 @@ const https = require('https');
 const calendarApi = require('./routes/lib/calendar');
 const userApi = require('./routes/lib/users');
 const weatherApi = require('./routes/lib/weather');
+const trainDelaysApi = require('./routes/lib/train-delays');
 /*
  * Socket.IO
  */
@@ -122,6 +123,40 @@ module.exports = function (server) {
         }
     }
 
+    
+    class TrainDelays {
+        constructor(_io) {
+            this.io = _io.of('/train-delays').on('connection', this.init.bind(this));
+        }
+
+        init(socket) {
+            this.send(socket.id);
+            
+            socket.on('get', () => {
+                this.send(socket.id);
+            });
+        }
+
+        send(to) {
+            fs.readFile('./storage/data/train-delays/delays.json', 'utf-8', (err, content) => {
+                if (err) return;
+
+                const json = JSON.parse(content);
+                if (to) {
+                    this.io.to(to).emit('delays', json);
+                } else {
+                    this.io.emit('delays', json);
+                }
+            });
+        }
+
+        update() {
+            trainDelaysApi.update(() => {
+                this.send();
+            });
+        }
+    }
+
 
     const calendar = new Calendar(io);
     calendar.updateAllEvents();
@@ -146,6 +181,14 @@ module.exports = function (server) {
         setInterval(() => {
             weather.update();
         }, config.weather.updateIntervalSeconds * 1000);
+    }
+
+    const trainDelays = new TrainDelays(io);
+    trainDelays.update();
+    if (config.trainDelays.streaming) {
+        setInterval(() => {
+            trainDelays.update();
+        }, config.trainDelays.updateIntervalSeconds * 1000);
     }
 
     return io;
