@@ -9,6 +9,7 @@ import WeatherDetail from './js/weather/WeatherDetail';
 
 import CalendarStore from './js/models/CalendarStore';
 import WeatherStore from './js/models/WeatherStore';
+import TrainDelaysStore from './js/models/TrainDelaysStore';
 
 import "./sass/_reboot.scss";
 import "./sass/style.scss";
@@ -19,6 +20,7 @@ moment.tz.setDefault("Asia/Tokyo");
 
 const calendarStore = new CalendarStore();
 const weatherStore = new WeatherStore();
+const trainDelaysStore = new TrainDelaysStore();
 
 class App extends React.Component {
     constructor(props) {
@@ -32,7 +34,7 @@ class App extends React.Component {
                     <Header />
                     <Switch>
                         <Route exact path='/' render={({ match }) => (
-                            <Top weatherStore={weatherStore} calendarStore={calendarStore} {...this.props} match={match} />
+                            <Top weatherStore={weatherStore} calendarStore={calendarStore} trainDelaysStore={trainDelaysStore} {...this.props} match={match} />
                         )} />
                         <Route exact path='/weather' render={({ match }) => (
                             <WeatherDetail weatherStore={weatherStore} match={match} />

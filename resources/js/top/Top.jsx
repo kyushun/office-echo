@@ -17,7 +17,7 @@ export default class Top extends React.Component {
             <div className="main-body">
                 <div className="left-body">
                     <Link to="/weather"><Weather weatherStore={this.props.weatherStore} /></Link>
-                    <Train />
+                    <Train trainDelaysStore={this.props.trainDelaysStore} />
                 </div>
                 <div className="right-body">
                     <Rooms calendarStore={this.props.calendarStore} />

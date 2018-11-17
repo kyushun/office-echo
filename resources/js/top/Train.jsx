@@ -1,8 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { observer } from 'mobx-react';
 import { SvgLoader, SvgProxy } from 'react-svgmt';
 
-export default class Train extends React.Component {
+const Train = observer(class Train extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,15 +36,15 @@ export default class Train extends React.Component {
             <div className="card info">
                 <div className="card-title">電車遅延情報</div>
                 <div className="train-info">
-                    {this.state.lines.map((line) => {
+                    {this.props.trainDelaysStore.delays.map((line) => {
                         return (
-                            <div key={line.symbol}>
-                                {line.summary}
-                            </div>
+                            <div key={line.name}>{line.name}</div>
                         );
                     })}
                 </div>
             </div>
         );
     }
-}
+});
+
+export default Train;
