@@ -10,15 +10,11 @@ const trainDelaysApi = require('./routes/lib/train-delays');
 module.exports = function (server) {
     var io = require('socket.io')(server);
 
-    const currentTime = (() => {
-        return moment().format('HH:mm:ss');
-    })();
-
     io.sockets.on('connection', function (socket) {
-        console.log(`【Connected】${currentTime}Client Socket is connected.`);
+        myconsole.log(myconsole.subjects.info, 'Socket_io', `Client is connected - ${JSON.stringify(socket.handshake)}`);
         
         socket.on('disconnect', function () {
-            console.log(`【Disconnected】Client Socket is disconnected.`);
+            myconsole.log(myconsole.subjects.info, 'Socket_io', `Client is disconnected - ${JSON.stringify(socket.handshake)}`);
         });
     });
 
@@ -73,7 +69,6 @@ module.exports = function (server) {
         }
 
         updateAllEvents() {
-            console.log(`【Updated】${moment().format('HH:mm:ss')}: Events Updated.`);
             this.getResources().forEach((resource) => {
                 calendarApi.updateEvents(resource.id, (id, path) => {
                     this.sendEvent(resource);
@@ -112,7 +107,6 @@ module.exports = function (server) {
         update() {
             const owm = config.weather.openWeatherMapApi;
             if (owm.apiKey && owm.locationId) {
-                console.log(`【Updated】${moment().format('HH:mm:ss')}: Weather Updated.`);
                 weatherApi.update({
                     apiKey: owm.apiKey,
                     id: owm.locationId
@@ -168,10 +162,8 @@ module.exports = function (server) {
 
     if (config.room.autoUpdateUsername) {
         userApi.update();
-        console.log(`【Updated】${moment().format('HH:mm:ss')}: Users Updated.`);
         setInterval(() => {
             userApi.update();
-            console.log(`【Updated】${moment().format('HH:mm:ss')}: Users Updated.`);
         }, 24 * 60 * 60 * 1000);
     }
 
