@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Switch, Route, Link, withRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link, withRouter } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { observer, inject, Provider } from "mobx-react";
 import Header from './js/Header';
 import Top from './js/top/Top';
@@ -27,22 +28,35 @@ class App extends React.Component {
 
     render = () => {
         return (
-            <BrowserRouter>
-                <div>
-                    <Header />
-                    <Switch>
-                        <Route exact path='/' render={({ match }) => (
-                            <Top weatherStore={weatherStore} calendarStore={calendarStore} {...this.props} match={match} />
-                        )} />
-                        <Route exact path='/weather' render={({ match }) => (
-                            <WeatherDetail weatherStore={weatherStore} match={match} />
-                        )} />
-                        <Route exact path='/room/:id' render={({ match }) => (
-                            <Room calendarStore={calendarStore} match={match} />
-                        )} />
-                    </Switch>
-                </div>
-            </BrowserRouter>
+            <Router>
+                <Route render={({ location }) => (
+                    <div>
+                        <Header />
+                        <div style={{position: 'relative'}}>
+                            <TransitionGroup>
+                                <CSSTransition
+                                    key={location.key}
+                                    classNames="anim"
+                                    timeout={300}
+                                >
+
+                                    <Switch location={location}>
+                                        <Route exact path='/' render={({ match }) => (
+                                            <Top weatherStore={weatherStore} calendarStore={calendarStore} {...this.props} match={match} />
+                                        )} />
+                                        <Route exact path='/weather' render={({ match }) => (
+                                            <WeatherDetail weatherStore={weatherStore} match={match} />
+                                        )} />
+                                        <Route exact path='/room/:id' render={({ match }) => (
+                                            <Room calendarStore={calendarStore} match={match} />
+                                        )} />
+                                    </Switch>
+                                </CSSTransition>
+                            </TransitionGroup>
+                        </div>
+                    </div>
+                )} />
+            </Router>
         );
     }
 }
