@@ -114,7 +114,22 @@ const Rooms = observer(class Rooms extends React.Component {
                                         {cal.summary}
                                     </div>
                                     <div className="next">
-                                        {moment(event.start).format('HH:mm')}〜{moment(event.end).format('HH:mm')}<br />
+                                        {(() => {
+                                            const dayDiff = moment(event.end).diff(moment(event.start), 'days');
+                                            if (dayDiff >= 1) {
+                                                if (event.allDay) {
+                                                    if (dayDiff > 1) {
+                                                        return moment(event.start).format('MM/DD(ddd)') + ' - ' + moment(event.end).add(-1, 'days').format('MM/DD(ddd)');
+                                                    } else {
+                                                        return '[終日] ' + moment(event.start).format('MM/DD(ddd)');
+                                                    }
+                                                }
+                                                return moment(event.start).format('MM/DD(ddd) HH:mm') + ' - ' + moment(event.end).format('MM/DD(ddd) HH:mm');
+                                            } else {
+                                                return moment(event.start).format('HH:mm') + ' - ' + moment(event.end).format('HH:mm');
+                                            }
+                                        })()}
+                                        <br />
                                         {event.summary}
                                     </div>
                                 </Link>
