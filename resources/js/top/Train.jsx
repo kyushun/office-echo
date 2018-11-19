@@ -6,44 +6,31 @@ import { SvgLoader, SvgProxy } from 'react-svgmt';
 const Train = observer(class Train extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            lines: [
-                {
-                    summary: "京葉線",
-                    symbol: "JR_JE"
-                },
-                {
-                    summary: "埼京線",
-                    symbol: "JR_JA"
-                },
-                {
-                    summary: "山手線",
-                    symbol: "JR_JY"
-                },
-                {
-                    summary: "浅草線",
-                    symbol: "A"
-                }
-            ]
-        }
-    }
-
-    componentDidMount() {
     }
 
     render() {
-        return(
-            <div className="card info">
-                <div className="card-title">電車遅延情報</div>
-                <div className="train-info">
-                    {this.props.trainDelaysStore.delays.map((line) => {
-                        return (
-                            <div key={line.name}>{line.name}</div>
-                        );
-                    })}
+        if (this.props.trainDelaysStore.delays.length > 0) {
+            return(
+                <div className="card info">
+                    <div className="card-title">電車遅延情報</div>
+                    <div className="train-info">
+                        {this.props.trainDelaysStore.delays.map((line) => {
+                            const path = '/svg/line-symbol/' + line.symbol + '.svg';
+                            return (
+                                <div className="line-content" key={line.name}>
+                                    <object className="line-symbol" type="image/svg+xml" data={path} width="22" height="22"></object>
+                                    <span>{line.name}</span>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        } else {
+            return(
+                <div />
+            )
+        }
     }
 });
 

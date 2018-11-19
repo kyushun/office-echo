@@ -17,7 +17,18 @@ exports.update = (callback) => {
             return;
         }
 
-        fs.writeFile(FILE_PATH,  JSON.stringify(json, null, "\t"), (err) => {
+        const delays = json.filter((line) => {
+            if (line.name in config.trainDelays.allowList) {
+                return true;
+            }
+            return false;
+        }).map((line) => {
+            const symbol = config.trainDelays.allowList[line.name];
+            line.symbol = (symbol) ? symbol : 'default';
+            return line;
+        });
+
+        fs.writeFile(FILE_PATH,  JSON.stringify(delays, null, "\t"), (err) => {
             if (err) {
                 myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
                 return;
