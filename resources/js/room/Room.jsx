@@ -17,7 +17,7 @@ const Room = observer(class Room extends React.Component {
                 lastUpdated: new Date()
             });
         }, 1 * 1000);
-        
+
         this.autoCloseTimeout = setTimeout(() => {
             this.props.history.push('/');
         }, 30 * 1000);
@@ -87,7 +87,23 @@ const Room = observer(class Room extends React.Component {
                                                 {hours > 0 && <span>{hours}<span className="half-span">時間</span></span>}
                                                 {minutes}<span className="half-span">分</span>
                                             </div>
-                                            <div className="time">{this.timeDurationToString(currentEvent.start, currentEvent.end)}</div>
+                                            <div className="time">
+                                                {(() => {
+                                                    const dayDiff = moment(currentEvent.end).diff(moment(currentEvent.start), 'days');
+                                                    if (dayDiff >= 1) {
+                                                        if (currentEvent.allDay) {
+                                                            if (dayDiff > 1) {
+                                                                return moment(currentEvent.start).format('MM/DD(ddd)') + ' - ' + moment(currentEvent.end).add(-1, 'days').format('MM/DD(ddd)');
+                                                            } else {
+                                                                return '[終日] ' + moment(currentEvent.start).format('MM/DD(ddd)');
+                                                            }
+                                                        }
+                                                        return moment(currentEvent.start).format('MM/DD(ddd) HH:mm') + ' - ' + moment(currentEvent.end).format('MM/DD(ddd) HH:mm');
+                                                    } else {
+                                                        return moment(currentEvent.start).format('HH:mm') + ' - ' + moment(currentEvent.end).format('HH:mm');
+                                                    }
+                                                })()}
+                                            </div>
                                             <div className="summary">{currentEvent.summary || "タイトル未設定"}</div>
                                             <div className="sub-content">
                                                 <div>管理者：{currentEvent.manager.name}</div>
@@ -117,7 +133,7 @@ const Room = observer(class Room extends React.Component {
                                             {hours > 0 && <span>{hours}<span className="half-span">時間</span></span>}
                                             {minutes}<span className="half-span">分後</span>
                                         </div>
-                                        <div className="time">{this.timeDurationToString(e.start, e.end)}</div>
+                                        <div className="time">{moment(e.start).format('HH:mm')}〜{moment(e.end).format('HH:mm')}</div>
                                         <div className="summary">{e.summary || "タイトル未設定"}</div>
                                         <div className="sub-content">
                                             <div>管理者：{e.manager.name}</div>

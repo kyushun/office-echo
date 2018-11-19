@@ -94,7 +94,7 @@ getResponseJson = (calendar_id, data) => {
             summary: event.summary || "",
             start: event.start.date || event.start.dateTime,
             end: event.end.date || event.end.dateTime,
-            allDay: (event.start.date == true),
+            allDay: (event.start.date) ? true : false,
             manager: {
                 email: event.organizer.email,
                 name: users.getUserName(event.organizer.email)
