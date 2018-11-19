@@ -24,6 +24,9 @@
     },
     "trainDelays": {
         "streaming": true,
-        "updateIntervalSeconds": 10800
+        "updateIntervalSeconds": 10800,
+        "allowList": {
+            "山手線": "JR_JY"
+        }
     }
 }
