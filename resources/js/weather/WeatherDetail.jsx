@@ -21,7 +21,7 @@ const WeatherDetail = observer(class WeatherDetail extends React.Component {
 
     render() {
         const weathers = this.props.weatherStore.weather;
-
+        var _date = moment().add(1, 'day');
 
         return (
             <div className="weather-detail">
@@ -57,26 +57,26 @@ const WeatherDetail = observer(class WeatherDetail extends React.Component {
                                                 );
                                             })}
                                         </div>
+
                                         <hr className="w-f-hr" />
                                         <div className="weather-todays-content-wrapper">
-                                            {[...Array(4)].map((val, i) => {
-                                                const today = moment().date();
-                                                for (let _i = 1; _i < weathers.length; _i++) {
-                                                    if ((moment.unix(weathers[_i].dt).date() - today) ===  (i + 1)) {
-                                                        if ((moment.unix(weathers[_i].dt).hours() === 12)) {
-                                                            var index = _i;
-                                                            break;
-                                                        }
+                                            {weathers.filter((w) => {
+                                                const target = moment.unix(w.dt);
+                                                if (moment(_date).isSame(target), 'day') {
+                                                    if (target.hours() === 12) {
+                                                        return true;
                                                     }
                                                 }
+                                                return false;
+                                            }).map((w) => {
                                                 return (
-                                                    <div key={weathers[index].dt} className="weather-todays-content">
-                                                        <div className="weather-todays-content-title">{moment.unix(weathers[index].dt).format('MM/DD')}</div>
+                                                    <div key={w.dt} className="weather-todays-content">
+                                                        <div className="weather-todays-content-title">{moment.unix(w.dt).format('MM/DD')}</div>
                                                         <div className="inner-content">
-                                                            <i className={`icon wi wi-owm-${weathers[index].id}`} />
+                                                            <i className={`icon wi wi-owm-${w.id}`} />
                                                             <div className="detail">
-                                                                <div className="temp">{weathers[index].temp}&deg;C　</div>
-                                                                <div className="humid">{weathers[index].humid}%</div>
+                                                                <div className="temp">{w.temp}&deg;C　</div>
+                                                                <div className="humid">{w.humid}%</div>
                                                             </div>
                                                         </div>
                                                     </div>
