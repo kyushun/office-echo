@@ -18,17 +18,17 @@ exports.update = (options, callback) => {
     };
     req.get(_options, (err, res, json) => {
         if (err) {
-            myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
+            myconsole.log(myconsole.subjects.error, API_NAME, 'An error has occurred', err);
             return;
         } else if (json.cod != 200) {
-            myconsole.log(myconsole.subjects.error, API_NAME, `Weather API returned error response - "${json}"`);
+            myconsole.log(myconsole.subjects.error, API_NAME, 'Weather API returned error response', json);
             return;
         }
 
         myconsole.log(myconsole.subjects.info, API_NAME, `Weather data is updated`);
         fs.writeFile(FILE_PATH, JSON.stringify(json, null, "\t"), (err) => {
             if (err) {
-                myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
+                myconsole.log(myconsole.subjects.error, API_NAME, 'An error has occurred', err);
                 return;
             }
             

@@ -11,10 +11,10 @@ module.exports = function (server) {
     var io = require('socket.io')(server);
 
     io.sockets.on('connection', function (socket) {
-        myconsole.log(myconsole.subjects.info, 'Socket_io', `Client is connected - ${JSON.stringify(socket.handshake)}`);
+        myconsole.log(myconsole.subjects.info, 'Socket_io', 'Client is connected', socket.handshake);
         
         socket.on('disconnect', function () {
-            myconsole.log(myconsole.subjects.info, 'Socket_io', `Client is disconnected - ${JSON.stringify(socket.handshake)}`);
+            myconsole.log(myconsole.subjects.info, 'Socket_io', 'Client is disconnected', socket.handshake);
         });
     });
 
