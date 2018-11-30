@@ -105,11 +105,12 @@ module.exports = function (server) {
         }
 
         update() {
-            const owm = config.weather.openWeatherMapApi;
-            if (owm.apiKey && owm.locationId) {
+            const darksky = config.weather.darkskyApi;
+            if (darksky.apiKey && darksky.latitude && darksky.longitude) {
                 weatherApi.update({
-                    apiKey: owm.apiKey,
-                    id: owm.locationId
+                    key: darksky.apiKey,
+                    lat: darksky.latitude,
+                    lng: darksky.longitude,
                 }, () => {
                     this.send();
                 });
