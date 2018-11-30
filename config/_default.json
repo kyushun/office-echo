@@ -3,7 +3,7 @@
         "optimization": true
     },
     "room": {
-        "streaming": true,
+        "autoUpdate": true,
         "updateIntervalSeconds": 300,
         "autoUpdateUsername": true,
         "resources": [
@@ -15,7 +15,7 @@
         ]
     },
     "weather": {
-        "streaming": true,
+        "autoUpdate": true,
         "updateIntervalSeconds": 10800,
         "openWeatherMapApi": {
             "locationId": "",
@@ -23,7 +23,7 @@
         }
     },
     "trainDelays": {
-        "streaming": true,
+        "autoUpdate": true,
         "updateIntervalSeconds": 10800,
         "allowList": {
             "山手線": "JR_JY"
