@@ -501,3 +501,48 @@ hr {
 .w-f-hr {
     margin: 2rem 0;
 }
+
+.error-wrapper {
+    color: #555;
+}
+.error-stripe {
+    height: 2rem;
+    background-image: linear-gradient(
+        -45deg,
+        #555 25%,
+        #fde100 25%,
+        #fde100 50%,
+        #555 50%,
+        #555 75%,
+        #fde100 75%,
+        #fde100
+    );
+    background-size: 30px 30px;
+    background-attachment: fixed;
+}
+.error-content {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+.error-reload-btn {
+    text-align: center;
+}
+.error-uc-icon {
+    display: block;
+    margin: 1rem auto;
+    width: 300px;
+    height: 300px;
+    fill: rgb(253, 225, 0);
+}
+.error-detail {
+    display: block;
+    margin: .5rem auto 1.5rem;
+    padding: 1rem;
+    width: 80%;
+    background: #eee;
+
+    hr {
+        margin: .25rem 0;
+    }
+}
