@@ -1,37 +1,34 @@
 import { observable, computed, action, decorate } from 'mobx';
 
 class WeatherStore {
-    weather = [];
+    currently = [];
+    hourly = [];
+    daily = [];
 
     constructor() {
         this.socketWeather = io('/weather');
 
         this.socketWeather.on('disconnect', (err) => {
-            this.weather = [];
+            this.currently = [];
+            this.hourly = [];
+            this.daily = [];
         });
 
         this.socketWeather.on('weather', (data) => {
-            this.setOwmData(data);
-            //console.log('weather data updated!');
+            this.setDarkskyData(data);
         });
     }
 
-    setOwmData = (json) => {
-        var _weather = [];
-        for (let i = 0; i < json.list.length; i++) {
-            const day = json.list[i];
-            _weather.push({
-                dt: day.dt,
-                id: day.weather[0].id,
-                temp: Math.round(day.main.temp),
-                humid: day.main.humidity
-            });
-        }
-        this.weather = _weather;
+    setDarkskyData = (json) => {
+        this.currently[0] = json.currently || [];
+        this.hourly = json.hourly.data || [];
+        this.daily = json.daily.data || [];
     }
 }
 
 export default decorate(WeatherStore, {
-    weather: observable,
-    setOwmData: action
+    currently: observable,
+    hourly: observable,
+    daily: observable,
+    setDarkskyData: action
 });

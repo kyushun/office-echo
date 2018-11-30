@@ -20,63 +20,79 @@ const WeatherDetail = observer(class WeatherDetail extends React.Component {
     }
 
     render() {
-        const weathers = this.props.weatherStore.weather;
-        var _date = moment().add(1, 'day');
+        const { currently, hourly, daily } = this.props.weatherStore;
 
         return (
             <div className="weather-detail">
-                {(() => {
-                    if (weathers.length > 0) {
-                        return (
-                            <div className="weather-detail-wrapper">
+                <div className="weather-detail-wrapper">
+                    {(() => {
+                        if (currently.length > 0) {
+                            return (
                                 <div className="card current-weather-detail">
                                     <div className="card-title">現在の天気</div>
                                     <div className="today-weather">
-                                        <i className={`icon wi wi-owm-${weathers[0].id}`} />
-                                        <div className="temp">{weathers[0].temp}&deg;C</div>
-                                        <div className="humid">{weathers[0].humid}%</div>
+                                        <i className={`icon wi wi-forecast-io-${currently[0].icon}`} />
+                                        <div className="temp">
+                                            <span className="half-size">
+                                                <span className="three-quarters-size">
+                                                    気温:&nbsp;
+                                                </span>
+                                            </span>
+                                            {Math.round(currently[0].temperature)}
+                                            <span className="half-size">&deg;C</span>
+                                        </div>
+                                        <div className="humid">
+                                            <span className="half-size">
+                                                <span className="three-quarters-size">
+                                                    降水確率:&nbsp;
+                                                </span>
+                                            </span>
+                                            {Math.round(currently[0].precipProbability * 100)}
+                                            <span className="half-size">%</span>
+                                        </div>
+                                        <div className="humid">
+                                            <span className="half-size">
+                                                <span className="three-quarters-size">
+                                                    湿度:&nbsp;
+                                                </span>
+                                            </span>
+                                            {Math.round(currently[0].humidity * 100)}
+                                            <span className="half-size">%</span>
+                                        </div>
+                                        <div className="humid">
+                                            <span className="half-size">
+                                                <span className="three-quarters-size">
+                                                    気圧:&nbsp;
+                                                </span>
+                                            </span>
+                                            {Math.round(currently[0].pressure)}
+                                            <span className="half-size">hPa</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="card follow-weather-detail">
-                                    <div className="card-title">今後の天気</div>
+                            );
+                        }
+                    })()}
+                    <div className="card follow-weather-detail">
+                        <div className="card-title">今後の天気</div>
+                        {(() => {
+                            if (hourly.length > 0) {
+                                return (
                                     <div className="weather-todays">
                                         <div className="weather-todays-content-wrapper">
                                             {[...Array(3)].map((val, i) => {
-                                                const index = i + 1;
+                                                const index = (i + 1) * 3;
                                                 return (
-                                                    <div key={weathers[index].dt} className="weather-todays-content">
-                                                        <div className="weather-todays-content-title">{moment.unix(weathers[index].dt).format('HH:mm')}</div>
+                                                    <div key={hourly[index].time} className="weather-todays-content">
+                                                        <div className="weather-todays-content-title">{moment.unix(hourly[index].time).format('HH:mm')}</div>
                                                         <div className="inner-content">
-                                                            <i className={`icon wi wi-owm-${weathers[index].id}`} />
+                                                            <i className={`icon wi wi-forecast-io-${hourly[index].icon}`} />
                                                             <div className="detail">
-                                                                <div className="temp">{weathers[index].temp}&deg;C　</div>
-                                                                <div className="humid">{weathers[index].humid}%</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-
-                                        <hr className="w-f-hr" />
-                                        <div className="weather-todays-content-wrapper">
-                                            {weathers.filter((w) => {
-                                                const target = moment.unix(w.dt);
-                                                if (moment(_date).isSame(target), 'day') {
-                                                    if (target.hours() === 12) {
-                                                        return true;
-                                                    }
-                                                }
-                                                return false;
-                                            }).map((w) => {
-                                                return (
-                                                    <div key={w.dt} className="weather-todays-content">
-                                                        <div className="weather-todays-content-title">{moment.unix(w.dt).format('MM/DD')}</div>
-                                                        <div className="inner-content">
-                                                            <i className={`icon wi wi-owm-${w.id}`} />
-                                                            <div className="detail">
-                                                                <div className="temp">{w.temp}&deg;C　</div>
-                                                                <div className="humid">{w.humid}%</div>
+                                                                <div className="temp">{Math.round(hourly[index].temperature)}&deg;C　</div>
+                                                                <div className="humid">
+                                                                    <i className="icon wi wi-raindrop" />
+                                                                    {Math.round(hourly[index].precipProbability * 100)}%
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -84,11 +100,35 @@ const WeatherDetail = observer(class WeatherDetail extends React.Component {
                                             })}
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        );
-                    }
-                })()}
+                                );
+                            }
+                        })()}
+                        <hr className="w-f-hr" />
+                        {(() => {
+                            if (daily.length > 0) {
+                                return (
+                                    <div className="weather-todays-content-wrapper">
+                                        {[...Array(4)].map((val, i) => {
+                                            const index = i + 1;
+                                            return (
+                                                <div key={daily[index].time} className="weather-todays-content">
+                                                    <div className="weather-todays-content-title">{moment.unix(daily[index].time).format('MM/DD')}</div>
+                                                    <div className="inner-content">
+                                                        <i className={`icon wi wi-forecast-io-${daily[index].icon}`} />
+                                                        <div className="detail">
+                                                            <div className="temp">{Math.round(daily[index].temperatureHigh)}&nbsp;/&nbsp;{Math.round(daily[index].temperatureLow)}&deg;C</div>
+                                                            <div className="humid"><i className="icon wi wi-raindrop" />{Math.round(daily[index].precipProbability * 100)}%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                );
+                            }
+                        })()}
+                    </div>
+                </div>
                 <Link to="/">
                     <div className="close-btn"><div className="content">×</div></div>
                 </Link>
