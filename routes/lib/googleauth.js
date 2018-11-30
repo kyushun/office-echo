@@ -20,7 +20,7 @@ exports.getOAuth2Client = () => {
         const token = fs.readFileSync(TOKEN_PATH, 'utf-8');
         oAuth2Client.setCredentials(JSON.parse(token));
     } catch (err) {
-        myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
+        myconsole.log(myconsole.subjects.error, API_NAME, 'An error has occurred', err);
         return;
     }
     return oAuth2Client;
