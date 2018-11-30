@@ -25,7 +25,7 @@ app.set('port', port);
  */
 
 process.on('uncaughtException', function(err) {
-  myconsole.log(myconsole.subjects.error, 'Node.js', `An error has occurred - "${err}"`);
+  myconsole.log(myconsole.subjects.error, 'Node.js', 'An error has occurred', err);
 });
 
 /**
