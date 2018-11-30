@@ -153,8 +153,11 @@ module.exports = function (server) {
 
 
     const calendar = new Calendar(io);
-    calendar.updateAllEvents();
-    if (config.room.streaming) {
+    const weather = new Weather(io);
+    const trainDelays = new TrainDelays(io);
+    
+    if (config.room.autoUpdate) {
+        calendar.updateAllEvents();
         setInterval(() => {
             calendar.updateAllEvents();
         }, config.room.updateIntervalSeconds * 1000);
@@ -167,17 +170,15 @@ module.exports = function (server) {
         }, 24 * 60 * 60 * 1000);
     }
 
-    const weather = new Weather(io);
-    weather.update();
-    if (config.weather.streaming) {
+    if (config.weather.autoUpdate) {
+        weather.update();
         setInterval(() => {
             weather.update();
         }, config.weather.updateIntervalSeconds * 1000);
     }
 
-    const trainDelays = new TrainDelays(io);
-    trainDelays.update();
-    if (config.trainDelays.streaming) {
+    if (config.trainDelays.autoUpdate) {
+        trainDelays.update();
         setInterval(() => {
             trainDelays.update();
         }, config.trainDelays.updateIntervalSeconds * 1000);
