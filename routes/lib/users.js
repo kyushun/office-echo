@@ -22,7 +22,7 @@ exports.getUserName = (email, _name) => {
             }
         }
     } catch (err) {
-        myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
+        myconsole.log(myconsole.subjects.error, API_NAME, 'An error has occurred', err);
     }
     return name;
 }
@@ -40,7 +40,7 @@ exports.update = (_options, callback) => {
     const service = google.admin({ version: 'directory_v1', auth });
     service.users.list(options, (err, res) => {
         if (err) {
-            myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
+            myconsole.log(myconsole.subjects.error, API_NAME, 'An error has occurred', err);
             return;
         }
 
@@ -57,7 +57,7 @@ exports.update = (_options, callback) => {
             myconsole.log(myconsole.subjects.info, API_NAME, `Users data Updated(${users.length})`);
             fs.writeFile(FILE_PATH, JSON.stringify(json, null, "\t"), (err) => {
                 if (err) {
-                    myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
+                    myconsole.log(myconsole.subjects.error, API_NAME, 'An error has occurred', err);
                     return;
                 }
 

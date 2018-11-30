@@ -1,13 +1,14 @@
 const fs = require('fs');
 const FILE_PATH = './log/';
 
-exports.log = (subject, calledBy, _content) => {
+exports.log = (subject, calledBy, message, detail) => {
     const date = moment().format('YYYY-MM-DD');
         const path = FILE_PATH + date + '.log';
 
         const time = moment().format('YYYY-MM-DD HH:mm:ss.SSS');
-        const content = (typeof _content === 'object') ? JSON.stringify(_content) : _content;
-        const data = `${subject || ''}  ${time}  [${calledBy || ''}] ${content || ''}`;
+        const _message = (typeof message === 'object') ? JSON.stringify(message) : message;
+        const _detail = (typeof detail === 'object') ? JSON.stringify(detail) : detail;
+        const data = `${subject || ''}  ${time}  [${calledBy || ''}] ${_message || ''}${_detail ? ' - ' + _detail : ''}`;
 
         fs.appendFileSync(path, data + "\n");
         console.log(data);
