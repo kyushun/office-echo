@@ -58,6 +58,19 @@ hr {
 .half-span {
     font-size: .75em;
 }
+.quarter-size {
+    font-size: .25em;
+}
+.half-size {
+    font-size: .5em;
+}
+.three-quarters-size {
+    font-size: .75em;
+}
+
+.wi {
+    padding-right: .25rem;
+}
 
 .anim-enter {
     opacity: 0;
@@ -186,8 +199,6 @@ hr {
 }
 
 .weather {
-    max-height: 45vh;
-
     .today-weather {
         .icon {
             display: block;
@@ -384,6 +395,7 @@ hr {
 
 .current-weather-detail {
     margin: 10px 0 0 0;
+    width: 100%;
     box-shadow: none;
     overflow: visible;
     &:active {
@@ -391,6 +403,7 @@ hr {
     }
 
     .today-weather {
+        overflow-x: auto;
         white-space: nowrap;
         font: {
             size: 3rem;
@@ -472,7 +485,7 @@ hr {
         flex-direction: row;
         justify-content: center;
 
-        i {
+        &>i {
             font-size: 2.5rem;
         }
         .detail {
@@ -482,6 +495,7 @@ hr {
         }
     }
 }
+
 .weather-todays-content+ .weather-todays-content {
     .weather-todays-content-title::before {
         content: '';
