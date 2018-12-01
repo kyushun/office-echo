@@ -17,9 +17,10 @@
     "weather": {
         "autoUpdate": true,
         "updateIntervalSeconds": 10800,
-        "openWeatherMapApi": {
-            "locationId": "",
-            "apiKey": ""
+        "darkskyApi": {
+            "apiKey": "",
+            "latitude": 35.4122,
+            "longitude": 139.4130
         }
     },
     "trainDelays": {
