@@ -59,12 +59,12 @@ exports.updateEvents = (calendarId, callback) => {
             } else {
                 json.error = 'Unknown Error';
             }
-            myconsole.log(myconsole.subjects.error, API_NAME, `An error has occurred - "${err}"`);
+            myconsole.log(myconsole.subjects.error, API_NAME, 'An error has occurred', err);
         } else {
             json = getResponseJson(calendarId, _res.data);
         }
         
-        myconsole.log(myconsole.subjects.info, API_NAME, `Calendar Events Updated - "${calendarId}"`);
+        myconsole.log(myconsole.subjects.info, API_NAME, 'Calendar Events Updated', calendarId);
         fs.writeFileSync(`${FILE_PATH}${calendarId}.json`, JSON.stringify(json, null, "\t"));
         if ( typeof(callback) == "function") {
             callback(calendarId, `${FILE_PATH}${calendarId}.json`);
