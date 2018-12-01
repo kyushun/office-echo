@@ -19,6 +19,7 @@ import "./sass/style.scss";
 
 global.moment = require('moment-timezone');
 moment.tz.setDefault("Asia/Tokyo");
+moment.locale("ja");
 
 const calendarStore = new CalendarStore();
 const weatherStore = new WeatherStore();

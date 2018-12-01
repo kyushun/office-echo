@@ -11,37 +11,45 @@ const Weather = observer(class Weather extends React.Component {
     }
 
     render() {
-        const weather = this.props.weatherStore.weather;
+        const { currently, hourly } = this.props.weatherStore;
 
         return (
             <div className="card weather">
                 <div className="card-title">天気</div>
                 {(() => {
-                    if (weather.length > 0) {
+                    if (currently.length > 0) {
                         return (
                             <div>
                                 <div className="today-weather">
-                                    <i className={`icon wi wi-owm-${weather[0].id}`} />
-                                    <div className="temp">{weather[0].temp}&deg;C</div>
+                                    <i className={`icon wi wi-forecast-io-${currently[0].icon}`} />
+                                    <div className="temp">{Math.round(currently[0].temperature)}&deg;C</div>
                                 </div>
-                                <hr className="weather-hr" />
-                                <div className="weekly-weather">
-                                    <div className="ww1">
-                                        <div className="describe">3<span className="half-span">時間後</span></div>
-                                        <i className={`icon wi wi-owm-${weather[1].id}`} />
-                                        <div className="temp">{weather[1].temp}&deg;C</div>
-                                    </div>
-                                    <div className="ww2">
-                                        <div className="describe">6<span className="half-span">時間後</span></div>
-                                        <i className={`icon wi wi-owm-${weather[2].id}`} />
-                                        <div className="temp">{weather[2].temp}&deg;C</div>
-                                    </div>
-                                    <div className="ww3">
-                                        <div className="describe">9<span className="half-span">時間後</span></div>
-                                        <i className={`icon wi wi-owm-${weather[3].id}`} />
-                                        <div className="temp">{weather[3].temp}&deg;C</div>
-                                    </div>
-                                </div>
+                                {(() => {
+                                    if (hourly.length > 0) {
+                                        return (
+                                            <div>
+                                                <hr className="weather-hr" />
+                                                <div className="weekly-weather">
+                                                    <div className="ww1">
+                                                        <div className="describe">3<span className="half-span">時間後</span></div>
+                                                        <i className={`icon wi wi-forecast-io-${hourly[3].icon}`} />
+                                                        <div className="temp">{Math.round(hourly[3].temperature)}&deg;C</div>
+                                                    </div>
+                                                    <div className="ww2">
+                                                        <div className="describe">6<span className="half-span">時間後</span></div>
+                                                        <i className={`icon wi wi-forecast-io-${hourly[6].icon}`} />
+                                                        <div className="temp">{Math.round(hourly[6].temperature)}&deg;C</div>
+                                                    </div>
+                                                    <div className="ww3">
+                                                        <div className="describe">9<span className="half-span">時間後</span></div>
+                                                        <i className={`icon wi wi-forecast-io-${hourly[9].icon}`} />
+                                                        <div className="temp">{Math.round(hourly[9].temperature)}&deg;C</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    }
+                                })()}
                             </div>
                         );
                     } else {
