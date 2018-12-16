@@ -8,6 +8,7 @@ $border-color: #DFE1E5;
 $material-black: #3C4858;
 $material-green: #4CAF50;
 $material-red:  #F44336;
+$material-blue: #64B5F6;
 
 @mixin time-frame($color: #000) {
     display: inline-block;
@@ -571,6 +572,92 @@ hr {
 .v-room-card-footer-empty {
     background: linear-gradient(to right, #90C73D, #59AB88);
     box-shadow: 0 12px 20px -10px rgba(144, 199, 61, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(144, 199, 61, 0.2);
+}
+.v-room-detail {
+    position: absolute;
+    height: 90%;
+    width: 85%;
+    top: 5%;
+    padding: 30px;
+    background: rgba(255, 255, 255, .9);
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0px 8px 50px -25px rgba(0, 0, 0, .5);
+    z-index: 999;
+}
+.v-room-detail-content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.v-room-detail-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+.v-room-detail-current {
+    position: relative;
+    padding: 1rem 0 1.25rem;
+    //height: 60%;
+    border-bottom: solid 1px $border-color;
+}
+.v-room-detail-current-using {
+    .time {
+        margin-top: .75rem;
+    }
+    .summary, .time, .people {
+        font-size: 1.5rem;
+    }
+    .people {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: row;
+        .manager, .attendees {
+            width: 45%;
+        }
+    }
+}
+.v-room-detail-current-table {
+    border-collapse: separate;
+    border-spacing: 3rem .5rem;
+    font-size: 1.25rem;
+
+    tr {
+        margin: 10px 0;
+    }
+    th {
+        padding: .25rem 1.5rem;
+        color: white;
+        font-weight: normal;
+        text-align: center;
+        background: $material-blue;
+        border-radius: 20px;
+    }
+}
+.v-room-detail-current-empty {
+    padding: 5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: $material-green;
+}
+.v-room-detail-follow-event {
+    display: flex;
+    flex-direction: row;
+    margin: .5rem 2rem;
+
+    .summary, .time, .manager {
+        width: 30%;
+        font-size: 1.25rem;
+    }
+}
+.v-room-detail-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: #3C4858;
+    border-radius: 50%;
 }
 
 .error-wrapper {
