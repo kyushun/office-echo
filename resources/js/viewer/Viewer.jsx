@@ -1,0 +1,90 @@
+import React from 'react';
+import { render } from 'react-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
+
+const Viewer = observer(class Viewer extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    untilTimeToObject(time) {
+        const days = moment(time).diff(moment(), 'days');
+        const hours = moment(time).diff(moment(), 'hours');
+        const minutes = (moment(time).diff(moment(), 'minutes') + 1);
+
+        return {
+            days: days,
+            hours: (hours - days * 24),
+            minutes: (minutes - hours * 60)
+        };
+    }
+
+    render() {
+        const cals = toJS(this.props.calendarStore.calendars);
+
+        return (
+            <div className="v-room-wrapper">
+                {cals.map((cal) => {
+                    const currentEvent = this.props.calendarStore.getNormalizedEvents(cal.id).currentEvent;
+
+                    return (
+                        <div key={cal.id}>
+                            <div className="card v-room-card">
+                                <div className="v-room-card-title">{cal.summary}</div>
+                                {(() => {
+                                    if (currentEvent) {
+                                        return (
+                                            <div>
+                                                <div className="time">
+                                                    {(() => {
+                                                        const dayDiff = moment(currentEvent.end).diff(moment(currentEvent.start), 'days');
+                                                        if (dayDiff >= 1) {
+                                                            if (currentEvent.allDay) {
+                                                                if (dayDiff > 1) {
+                                                                    return moment(currentEvent.start).format('MM/DD(ddd)') + ' - ' + moment(currentEvent.end).add(-1, 'days').format('MM/DD(ddd)');
+                                                                } else {
+                                                                    return moment(currentEvent.start).format('MM/DD(ddd)') + '【終日】';
+                                                                }
+                                                            }
+                                                            return moment(currentEvent.start).format('MM/DD(ddd) HH:mm') + ' - ' + moment(currentEvent.end).format('MM/DD(ddd) HH:mm');
+                                                        } else {
+                                                            return moment(currentEvent.start).format('HH:mm') + ' - ' + moment(currentEvent.end).format('HH:mm');
+                                                        }
+                                                    })()}
+                                                </div>
+                                                <div className="v-room-card-manager">{currentEvent.manager.name || "使用者不明"}</div>
+                                                <div className="v-room-card-summary">{currentEvent.summary || "タイトル未設定"}</div>
+                                            </div>
+                                        );
+                                    }
+                                })()}
+                                
+                                <div className={`v-room-card-footer v-room-card-footer-${currentEvent ? 'using' : 'empty'}`}>
+                                    {(() => {
+                                        if (currentEvent) {
+                                            const { days, hours, minutes } = this.untilTimeToObject(currentEvent.end);
+                                            return (
+                                                <div className="untill">
+                                                    <span className="half-span">のこり</span>
+                                                    {days > 0 && <span>{days}<span className="half-span">日</span></span>}
+                                                    {hours > 0 && <span>{hours}<span className="half-span">時間</span></span>}
+                                                    {minutes}<span className="half-span">分</span>
+                                                </div>
+                                            );
+                                        } else {
+                                            return '空室';
+                                        }
+                                    })()}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+});
+
+export default withRouter(Viewer);
