@@ -7,6 +7,7 @@ import Header from './js/Header';
 import Top from './js/top/Top';
 import Room from './js/room/Room';
 import WeatherDetail from './js/weather/WeatherDetail';
+import Viewer from './js/viewer/Viewer';
 import Error from './Error';
 
 import CalendarStore from './js/models/CalendarStore';
@@ -46,6 +47,9 @@ const MyRouter = props => (
                                 )} />
                                 <Route exact path='/room/:id' render={({ match }) => (
                                     <Room calendarStore={calendarStore} match={match} />
+                                )} />
+                                <Route exact path='/viewer' render={({ match }) => (
+                                    <Viewer calendarStore={calendarStore} match={match} />
                                 )} />
                                 <Route exact path='/error' render={({ match }) => (
                                     <Error error={this.state.errorContent} info={this.state.errorInfo} match={match} />
