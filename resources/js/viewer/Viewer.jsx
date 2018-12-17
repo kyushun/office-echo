@@ -42,41 +42,53 @@ const Viewer = observer(class Viewer extends React.Component {
         return (
             <div className="v-room-wrapper">
                 {cals.map((cal) => {
-                    const currentEvent = this.props.calendarStore.getNormalizedEvents(cal.id).currentEvent;
+                    const { currentEvent, followEvents } = this.props.calendarStore.getNormalizedEvents(cal.id);
 
                     return (
                         <div key={cal.id}>
                             <div className="card v-room-card">
                                 <div className="v-room-card-title">{cal.summary}</div>
-                                {(() => {
-                                    if (currentEvent) {
-                                        return (
-                                            <div>
-                                                <div className="time">
-                                                    {(() => {
-                                                        const dayDiff = moment(currentEvent.end).diff(moment(currentEvent.start), 'days');
-                                                        if (dayDiff >= 1) {
-                                                            if (currentEvent.allDay) {
-                                                                if (dayDiff > 1) {
-                                                                    return moment(currentEvent.start).format('MM/DD(ddd)') + ' - ' + moment(currentEvent.end).add(-1, 'days').format('MM/DD(ddd)');
-                                                                } else {
-                                                                    return moment(currentEvent.start).format('MM/DD(ddd)') + '【終日】';
+                                <div className="v-room-card-current">
+                                    {(() => {
+                                        if (currentEvent) {
+                                            return (
+                                                <div>
+                                                    <div className="time">
+                                                        {(() => {
+                                                            const dayDiff = moment(currentEvent.end).diff(moment(currentEvent.start), 'days');
+                                                            if (dayDiff >= 1) {
+                                                                if (currentEvent.allDay) {
+                                                                    if (dayDiff > 1) {
+                                                                        return moment(currentEvent.start).format('MM/DD(ddd)') + ' - ' + moment(currentEvent.end).add(-1, 'days').format('MM/DD(ddd)');
+                                                                    } else {
+                                                                        return moment(currentEvent.start).format('MM/DD(ddd)') + '【終日】';
+                                                                    }
                                                                 }
+                                                                return moment(currentEvent.start).format('MM/DD(ddd) HH:mm') + ' - ' + moment(currentEvent.end).format('MM/DD(ddd) HH:mm');
+                                                            } else {
+                                                                return moment(currentEvent.start).format('HH:mm') + ' - ' + moment(currentEvent.end).format('HH:mm');
                                                             }
-                                                            return moment(currentEvent.start).format('MM/DD(ddd) HH:mm') + ' - ' + moment(currentEvent.end).format('MM/DD(ddd) HH:mm');
-                                                        } else {
-                                                            return moment(currentEvent.start).format('HH:mm') + ' - ' + moment(currentEvent.end).format('HH:mm');
-                                                        }
-                                                    })()}
+                                                        })()}
+                                                        <span className="three-quarters-size">（{currentEvent.manager.name || "使用者不明"}）</span>
+                                                    </div>
+                                                    <div className="v-room-card-summary">{currentEvent.summary || "タイトル未設定"}</div>
                                                 </div>
-                                                <div className="v-room-card-manager">{currentEvent.manager.name || "使用者不明"}</div>
-                                                <div className="v-room-card-summary">{currentEvent.summary || "タイトル未設定"}</div>
+                                            );
+                                        }
+                                    })()}
+                                </div>
+                                {(() => {
+                                    if (followEvents.length > 0) {
+                                        const fe = followEvents[0];
+                                        return (
+                                            <div className="v-room-card-follow">
+                                                <span className="half-size">NEXT </span>{moment(fe.start).format('HH:mm') + ' - '}{fe.summary || "タイトル未設定"}
                                             </div>
                                         );
                                     }
                                 })()}
 
-                                <div className={`v-room-card-footer v-room-card-footer-${currentEvent ? 'using' : 'empty'}`} onClick={() => {this.onModalOpen(cal.id)}}>
+                                <div className={`v-room-card-footer v-room-card-footer-${currentEvent ? 'using' : 'empty'}`} onClick={() => { this.onModalOpen(cal.id) }}>
                                     {(() => {
                                         if (currentEvent) {
                                             const { days, hours, minutes } = this.untilTimeToObject(currentEvent.end);
@@ -131,91 +143,76 @@ const RoomDetails = observer(class RoomDetails extends React.Component {
         if (!id) return [];
 
         const { summary, currentEvent, followEvents } = this.props.calendarStore.getNormalizedEvents(id);
-        console.log(followEvents);
+
         return (
             <div className="v-room-detail">
                 <div className="v-room-detail-content">
                     <div className="v-room-detail-title">{summary}</div>
                     <div className="v-room-detail-current">
+                        <div className="v-room-detail-desc">現在の予定</div>
                         {(() => {
                             if (currentEvent) {
                                 return (
                                     <div className="v-room-detail-current-using">
-                                        <table className="v-room-detail-current-table">
-                                            <tbody>
-                                                <tr>
-                                                    <th>時間</th>
-                                                    <td>
-                                                        {(() => {
-                                                            const dayDiff = moment(currentEvent.end).diff(moment(currentEvent.start), 'days');
-                                                            if (dayDiff >= 1) {
-                                                                if (currentEvent.allDay) {
-                                                                    if (dayDiff > 1) {
-                                                                        return moment(currentEvent.start).format('MM/DD(ddd)') + ' - ' + moment(currentEvent.end).add(-1, 'days').format('MM/DD(ddd)');
-                                                                    } else {
-                                                                        return moment(currentEvent.start).format('MM/DD(ddd)') + '【終日】';
-                                                                    }
-                                                                }
-                                                                return moment(currentEvent.start).format('MM/DD(ddd) HH:mm') + ' - ' + moment(currentEvent.end).format('MM/DD(ddd) HH:mm');
+                                        <div className="v-room-detail-current-using-left">
+                                            <div className="v-room-detail-current-desc">時間</div>
+                                            <div className="v-room-detail-current-content">
+                                                {(() => {
+                                                    const dayDiff = moment(currentEvent.end).diff(moment(currentEvent.start), 'days');
+                                                    if (dayDiff >= 1) {
+                                                        if (currentEvent.allDay) {
+                                                            if (dayDiff > 1) {
+                                                                return moment(currentEvent.start).format('MM/DD(ddd)') + ' - ' + moment(currentEvent.end).add(-1, 'days').format('MM/DD(ddd)');
                                                             } else {
-                                                                return moment(currentEvent.start).format('HH:mm') + ' - ' + moment(currentEvent.end).format('HH:mm');
+                                                                return moment(currentEvent.start).format('MM/DD(ddd)') + '【終日】';
                                                             }
-                                                        })()}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th>タイトル</th>
-                                                    <td>{currentEvent.summary}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>管理者</th>
-                                                    <td>{currentEvent.manager.name}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>参加者</th>
-                                                    <td>{currentEvent.attendees.map((at) => {
-                                                        return (at.name + '　');
-                                                    })}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>メモ</th>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                        }
+                                                        return moment(currentEvent.start).format('MM/DD(ddd) HH:mm') + ' - ' + moment(currentEvent.end).format('MM/DD(ddd) HH:mm');
+                                                    } else {
+                                                        return moment(currentEvent.start).format('HH:mm') + ' - ' + moment(currentEvent.end).format('HH:mm');
+                                                    }
+                                                })()}
+                                            </div>
+                                            <div className="v-room-detail-current-desc">タイトル</div>
+                                            <div className="v-room-detail-current-content">{currentEvent.summary || '（タイトル未設定）'}</div>
+                                            <div className="v-room-detail-current-desc">メモ</div>
+                                            <div className="v-room-detail-current-content">{currentEvent.description || ''}</div>
+                                        </div>
+                                        <div className="v-room-detail-current-using-right">
+                                            <div className="v-room-detail-current-desc">予定管理者</div>
+                                            <div className="v-room-detail-current-content">{currentEvent.manager.name || '（不明）'}</div>
+                                            <div className="v-room-detail-current-desc">参加者</div>
+                                            <div className="v-room-detail-current-content">
+                                                {currentEvent.attendees.map((at) => {
+                                                    return <div key={at.email}>{at.name}</div>;
+                                                })}
+                                            </div>
+                                        </div>
                                     </div>
                                 );
                             } else {
                                 return (
-                                    <div className="v-room-detail-current-empty">現在は空室です</div>
+                                    <div className="v-room-detail-current-empty">
+                                        現在の予定はありません
+                                    </div>
                                 );
                             }
                         })()}
                     </div>
 
                     <div className="v-room-detail-follow">
+                        <div className="v-room-detail-desc">今後の予定</div>
+                        <div className="v-room-detail-follow-event">
+                            <div className="time desc">時間</div>
+                            <div className="summary desc">タイトル</div>
+                            <div className="manager desc">管理者</div>
+                        </div>
                         {(() => {
                             if (followEvents.length > 0) {
                                 return (followEvents.map((e) => {
                                     return (
                                         <div key={e.id} className="v-room-detail-follow-event">
-                                            <div className="time">
-                                                {(() => {
-                                                    const dayDiff = moment(e.end).diff(moment(e.start), 'days');
-                                                    if (dayDiff >= 1) {
-                                                        if (e.allDay) {
-                                                            if (dayDiff > 1) {
-                                                                return moment(e.start).format('MM/DD(ddd)') + ' - ' + moment(e.end).add(-1, 'days').format('MM/DD(ddd)');
-                                                            } else {
-                                                                return moment(e.start).format('MM/DD(ddd)') + '【終日】';
-                                                            }
-                                                        }
-                                                        return moment(e.start).format('MM/DD(ddd) HH:mm') + ' - ' + moment(e.end).format('MM/DD(ddd) HH:mm');
-                                                    } else {
-                                                        return moment(e.start).format('HH:mm') + ' - ' + moment(e.end).format('HH:mm');
-                                                    }
-                                                })()}
-                                            </div>
+                                            <div className="time">{moment(e.start).format('HH:mm') + ' - ' + moment(e.end).format('HH:mm')}</div>
                                             <div className="summary">{e.summary}</div>
                                             <div className="manager">{e.manager.name}</div>
                                         </div>
@@ -224,7 +221,7 @@ const RoomDetails = observer(class RoomDetails extends React.Component {
                             }
                         })()}
                     </div>
-                    <div className="v-room-detail-close" onClick={this.onClose}></div>
+                    <div className="close-btn" onClick={this.onClose}><div className="content">×</div></div>
                 </div>
             </div>
         );
