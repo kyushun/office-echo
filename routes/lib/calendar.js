@@ -92,6 +92,7 @@ getResponseJson = (calendar_id, data) => {
             id: event.id,
             status: event.status,
             summary: event.summary || "",
+            description: event.description || "",
             start: event.start.date || event.start.dateTime,
             end: event.end.date || event.end.dateTime,
             allDay: (event.start.date) ? true : false,
