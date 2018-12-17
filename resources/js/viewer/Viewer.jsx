@@ -8,8 +8,21 @@ const Viewer = observer(class Viewer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalCalId: null
+            modalCalId: null,
+            lastUpdated: new Date()
         };
+    }
+
+    componentDidMount = () => {
+        this.autoUpdateInterval = setInterval(() => {
+            this.setState({
+                lastUpdated: new Date()
+            });
+        }, 1 * 1000);
+    }
+
+    componentWillUnmount = () => {
+        clearInterval(this.autoUpdateInterval);
     }
 
     untilTimeToObject(time) {
@@ -122,6 +135,16 @@ const RoomDetails = observer(class RoomDetails extends React.Component {
         super(props);
     }
 
+    componentDidMount = () => {
+        this.autoCloseTimeout = setTimeout(() => {
+            this.onClose();
+        }, 30 * 1000);
+    }
+
+    componentWillUnmount = () => {
+        clearTimeout(this.autoCloseTimeout);
+    }
+
     untilTimeToObject(time) {
         const days = moment(time).diff(moment(), 'days');
         const hours = moment(time).diff(moment(), 'hours');
@@ -134,7 +157,7 @@ const RoomDetails = observer(class RoomDetails extends React.Component {
         };
     }
 
-    onClose = (e) => {
+    onClose = () => {
         this.props.onModalClose();
     }
 
