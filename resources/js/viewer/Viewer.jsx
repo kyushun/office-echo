@@ -196,14 +196,14 @@ const RoomDetails = observer(class RoomDetails extends React.Component {
                                                     }
                                                 })()}
                                             </div>
-                                            <div className="v-room-detail-current-desc">タイトル</div>
-                                            <div className="v-room-detail-current-content">{currentEvent.summary || '（タイトル未設定）'}</div>
+                                            <div className="v-room-detail-current-desc">予定管理者</div>
+                                            <div className="v-room-detail-current-content">{currentEvent.manager.name || '（不明）'}</div>
                                             <div className="v-room-detail-current-desc">メモ</div>
                                             <div className="v-room-detail-current-content">{currentEvent.description || ''}</div>
                                         </div>
                                         <div className="v-room-detail-current-using-right">
-                                            <div className="v-room-detail-current-desc">予定管理者</div>
-                                            <div className="v-room-detail-current-content">{currentEvent.manager.name || '（不明）'}</div>
+                                            <div className="v-room-detail-current-desc">タイトル</div>
+                                            <div className="v-room-detail-current-content">{currentEvent.summary || '（タイトル未設定）'}</div>
                                             <div className="v-room-detail-current-desc">参加者</div>
                                             <div className="v-room-detail-current-content v-room-detail-current-attendees">
                                                 {currentEvent.attendees.map((at) => {
