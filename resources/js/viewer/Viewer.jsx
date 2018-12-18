@@ -134,11 +134,14 @@ const RoomDetails = observer(class RoomDetails extends React.Component {
     constructor(props) {
         super(props);
     }
-
-    componentDidMount = () => {
-        this.autoCloseTimeout = setTimeout(() => {
-            this.onClose();
-        }, 30 * 1000);
+    
+    componentDidUpdate = () => {
+        clearTimeout(this.autoCloseTimeout);
+        if (this.props.id != null) {
+            this.autoCloseTimeout = setTimeout(() => {
+                this.onClose();
+            }, 30 * 1000);
+        }
     }
 
     componentWillUnmount = () => {
