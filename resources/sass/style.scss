@@ -582,8 +582,8 @@ hr {
 }
 .v-room-detail {
     position: absolute;
-    height: 90%;
-    width: 85%;
+    height: 80vh;
+    width: 85vw;
     top: 5%;
     padding: 30px;
     background: rgba(255, 255, 255, .9);
@@ -596,6 +596,7 @@ hr {
     position: relative;
     height: 100%;
     width: 100%;
+    overflow-y: auto;
 
     .close-btn {
         position: absolute;
@@ -635,8 +636,16 @@ hr {
     position: relative;
     padding: 0rem 0 1.25rem;
     border-bottom: solid 1px $border-color;
-    max-height: 60%;
-    overflow-y: auto;
+}
+.v-room-detail-current-attendees {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .v-room-detail-current-attender {
+        width: 50%;
+        overflow: hidden;
+    }
 }
 .v-room-detail-current-using {
     display: flex;

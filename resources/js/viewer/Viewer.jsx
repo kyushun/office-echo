@@ -205,9 +205,9 @@ const RoomDetails = observer(class RoomDetails extends React.Component {
                                             <div className="v-room-detail-current-desc">予定管理者</div>
                                             <div className="v-room-detail-current-content">{currentEvent.manager.name || '（不明）'}</div>
                                             <div className="v-room-detail-current-desc">参加者</div>
-                                            <div className="v-room-detail-current-content">
+                                            <div className="v-room-detail-current-content v-room-detail-current-attendees">
                                                 {currentEvent.attendees.map((at) => {
-                                                    return <div key={at.email}>{at.name}</div>;
+                                                    return <div className="v-room-detail-current-attender" key={at.email}>{at.name}</div>;
                                                 })}
                                             </div>
                                         </div>
