@@ -29,5 +29,11 @@
         "allowList": {
             "山手線": "JR_JY"
         }
-    }
+    },
+    "notifications": [
+        {
+            "title": "お知らせ",
+            "content": "Office Echo"
+        }
+    ]
 }
