@@ -30,7 +30,7 @@ const MyRouter = props => (
     <Router>
         <Route render={({ location }) => (
             <div>
-                <Header />
+                <Header weatherStore={weatherStore} trainDelaysStore={trainDelaysStore} />
                 <div style={{ position: 'relative' }}>
                     <TransitionGroup>
                         <CSSTransition
