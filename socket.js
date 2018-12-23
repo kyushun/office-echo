@@ -153,9 +153,32 @@ module.exports = function (server) {
     }
 
 
+    class Notification {
+        constructor(_io) {
+            this.io = _io.of('/notification').on('connection', this.init.bind(this));
+        }
+
+        init(socket) {
+            this.send(socket.id);
+        }
+
+        send(to) {
+            const n = config.notifications;
+            if (n.length > 0) {
+                if (to) {
+                    this.io.to(to).emit('notice', n);
+                } else {
+                    this.io.emit('notice', n);
+                }
+            }
+        }
+    }
+    
+
     const calendar = new Calendar(io);
     const weather = new Weather(io);
     const trainDelays = new TrainDelays(io);
+    const notification = new Notification(io);
     
     if (config.room.autoUpdate) {
         calendar.updateAllEvents();
