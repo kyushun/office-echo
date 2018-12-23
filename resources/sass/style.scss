@@ -200,6 +200,7 @@ hr {
     border: solid 2px $material-blue;
     border-radius: 20px;
     overflow: hidden;
+    z-index: 999;
 }
 .header-info-title-wrapper {
     position: relative;
@@ -233,9 +234,12 @@ hr {
     max-width: 80%;
 }
 .header-info-content {
-    width: 100%;
+    min-width: 100%;
     padding: 0 .5rem;
     font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     z-index: 1;
 }
 .header-info-content-anim-in {
@@ -244,17 +248,13 @@ hr {
 .header-info-content-anim-out {
     position: absolute;
     top: 0;
-    opacity: 0;
+    max-width: 100%;
     transform: translateX(-110%);
     animation: swipeOut 3s ease;
 }
 @keyframes swipeIn {
     0% {
-        opacity: 0;
         transform: translateX(110%);
-    }
-    50% {
-        opacity: 1;
     }
     100% {
         transform: translateX(0);
@@ -262,11 +262,9 @@ hr {
 }
 @keyframes swipeOut {
     0% {
-        opacity: 1;
         transform: translateX(0);
     }
     100% {
-        opacity: 0;
         transform: translateX(-110%);
     }
 }
