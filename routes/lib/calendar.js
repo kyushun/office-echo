@@ -73,6 +73,28 @@ exports.updateEvents = (calendarId, callback) => {
     });
 }
 
+exports.createEvent = (organizer, options, callback) => {
+    const auth = googleauth.getOAuth2Client();
+    const calendar = google.calendar({ version: 'v3', auth });
+    calendar.events.insert({
+        auth: auth,
+        calendarId: organizer,
+        resource: options,
+    }, function(err, event) {
+        if (err) {
+            callback({
+                status: 'error',
+                description: err
+            });
+        }
+        
+        callback({
+            status: 'success',
+            description: event
+        });
+    });
+}
+
 getStartDay = () => {
     return moment().tz('Asia/Tokyo').startOf('day').format();
 }

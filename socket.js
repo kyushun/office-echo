@@ -75,6 +75,38 @@ module.exports = function (server) {
                 });
             });
         }
+
+        createEvent(organizer, roomId, options) {
+            if (!organizer || !roomId || !options) {
+                return;
+            }
+            
+            const _options = Object.assign({}, {
+                summary: 'システムによる予約',
+                description: 'このイベントはシステムによって予約されました',
+                start: {
+                    dateTime: moment().format(),
+                    timeZone: "Asia/Tokyo"
+                },
+                end: {
+                    dateTime: moment().startOf('hour').add(1, 'hours').format(),
+                    timeZone: "Asia/Tokyo"
+                },
+                attendees: [
+                    {
+                        email: organizer,
+                        responseStatus: 'accepted'
+                    },
+                    {
+                        email: roomId,
+                        responseStatus: 'accepted'
+                    }
+                ]
+            }, options);
+            calendarApi.createEvent(organizer, _options, (obj) => {
+                console.log(obj);
+            });
+        }
     }
 
 
