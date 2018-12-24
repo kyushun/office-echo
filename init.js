@@ -32,7 +32,7 @@ fs.mkdir(STORAGE_PATH + '/data', (err) => {
 /*
  * Google Api
  */
-const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/admin.directory.user.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/admin.directory.user.readonly'];
 const CREDENTIAL_PATH = './storage/auth/credentials.json';
 const TOKEN_PATH = './storage/auth/token.json';
 
