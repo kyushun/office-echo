@@ -30,11 +30,13 @@ $ node ./bin/www
 ## Config details
 ### Add Resources
 You should add the resource information on *config/default.json*.
+
 | Key | Description |
-| ------ | ------ |
+|-----|-------------|
 | id | Resource identifier. If you want to access the primary calendar of the currently logged in user, use the "primary" keyword. |
 | summary | Display name of the resource |
 | priority | Display order in the resource list on client |
+
 ``` javascript
 "room": {
     "resources": [
@@ -54,11 +56,13 @@ You should add the resource information on *config/default.json*.
 ### Get weather forecast
 You should enter the [DarkSky API Key](https://darksky.net/dev/docs) on *config/default.json*.  
 Change the values of latitude and longitude If you want to change the location from the default location (Tokyo) to another one.
+
 | Key | Description |
-| ------ | ------ |
+|-----|-------------|
 | apiKey | Your own API Key of [DarkSky](https://darksky.net/dev/docs) |
 | latitude | the latitude of location you want to get forecast |
 | longitude | the longitude of location you want to get forecast |
+
 ``` javascript
 "weather": {
     "darkskyApi": {
@@ -70,10 +74,12 @@ Change the values of latitude and longitude If you want to change the location f
 ```
 ### Display the Delays of the trains
 You should add the line name into list on *config/default.json*.
+
 | Key | Description |
-| ------ | ------ |
+|-----|-------------|
 | allowList | Lists of allowing to display |
 | allowList.*(key)*: *(value)* | *(key)* is the line name*, *(value)* is the file name of the line symbol svg |
+
 \* The line name should be same name as [ the line name in the table API having](https://rti-giken.jp/fhc/api/train_tetsudo/).  
 Put the SVG of the line symbol to *public/svg/line-symbol* if you want to add new other lines.
 ``` javascript
