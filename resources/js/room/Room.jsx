@@ -30,9 +30,9 @@ const Room = observer(class Room extends React.Component {
 
     untillTimeToString(time) {
         var str = '';
-        var min = moment(time).diff(moment(), 'minutes') + 1;
+        var min = moment(time).diff(momNow, 'minutes') + 1;
         if (min > 60) {
-            const h = moment(time).diff(moment(), 'hours');
+            const h = moment(time).diff(momNow, 'hours');
             min = min - (h * 60);
             str += `${h}時間`;
         }
@@ -41,9 +41,9 @@ const Room = observer(class Room extends React.Component {
     }
 
     untilTimeToObject(time) {
-        const days = moment(time).diff(moment(), 'days');
-        const hours = moment(time).diff(moment(), 'hours');
-        const minutes = (moment(time).diff(moment(), 'minutes') + 1);
+        const days = moment(time).diff(momNow, 'days');
+        const hours = moment(time).diff(momNow, 'hours');
+        const minutes = (moment(time).diff(momNow, 'minutes') + 1);
 
         return {
             days: days,

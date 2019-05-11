@@ -24,10 +24,6 @@ export default class Header extends React.Component {
 
     componentDidMount() {
         this.updateClock();
-        this.clockInterval = null;
-        this.clockInterval = setInterval(() => {
-            this.updateClock();
-        }, 1000);
     }
 
     getRokuyo() {
@@ -37,7 +33,7 @@ export default class Header extends React.Component {
     }
 
     updateClock = () => {
-        let dt = new Date();
+        let dt = momNow.toDate()
         let year = dt.getFullYear();
         let month = dt.getMonth();
         let date = dt.getDate();
@@ -99,20 +95,6 @@ const Notification = observer(class Notification extends React.Component {
     }
 
     componentDidMount() {
-        this.socket = io('/notification');
-        this.socket.on('disconnect', (err) => {
-            this.setState({
-                notifications: []
-            });
-        });
-        this.socket.on('notice', (data) => {
-            if (data && data.length > 0) {
-                this.setState({
-                    notifications: data
-                });
-            }
-        });
-
         setInterval(() => {
             this.animation();
         }, ANIMATION_INTERVAL_SEC * 1000);

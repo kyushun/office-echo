@@ -26,9 +26,9 @@ const Viewer = observer(class Viewer extends React.Component {
     }
 
     untilTimeToObject(time) {
-        const days = moment(time).diff(moment(), 'days');
-        const hours = moment(time).diff(moment(), 'hours');
-        const minutes = (moment(time).diff(moment(), 'minutes') + 1);
+        const days = moment(time).diff(momNow, 'days');
+        const hours = moment(time).diff(momNow, 'hours');
+        const minutes = (moment(time).diff(momNow, 'minutes') + 1);
 
         return {
             days: days,
@@ -149,9 +149,9 @@ const RoomDetails = observer(class RoomDetails extends React.Component {
     }
 
     untilTimeToObject(time) {
-        const days = moment(time).diff(moment(), 'days');
-        const hours = moment(time).diff(moment(), 'hours');
-        const minutes = (moment(time).diff(moment(), 'minutes') + 1);
+        const days = moment(time).diff(momNow, 'days');
+        const hours = moment(time).diff(momNow, 'hours');
+        const minutes = (moment(time).diff(momNow, 'minutes') + 1);
 
         return {
             days: days,

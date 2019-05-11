@@ -26,9 +26,9 @@ const Rooms = observer(class Rooms extends React.Component {
 
     untillTimeToString(time) {
         var str = '';
-        var min = moment(time).diff(moment(), 'minutes') + 1;
+        var min = moment(time).diff(momNow, 'minutes') + 1;
         if (min > 60) {
-            const h = moment(time).diff(moment(), 'hours');
+            const h = moment(time).diff(momNow, 'hours');
             min = min - (h * 60);
             str += `${h}時間`;
         } else {
@@ -39,9 +39,9 @@ const Rooms = observer(class Rooms extends React.Component {
     }
 
     untilTimeToObject(time) {
-        const days = moment(time).diff(moment(), 'days');
-        const hours = moment(time).diff(moment(), 'hours');
-        const minutes = (moment(time).diff(moment(), 'minutes') + 1);
+        const days = moment(time).diff(momNow, 'days');
+        const hours = moment(time).diff(momNow, 'hours');
+        const minutes = (moment(time).diff(momNow, 'minutes') + 1);
 
         return {
             days: days,
@@ -62,7 +62,7 @@ const Rooms = observer(class Rooms extends React.Component {
                     {emptyCals.map((cal) => {
                         let event;
                         for (let e of cal.events) {
-                            if (moment().isSameOrAfter(e.end)) continue;
+                            if (momNow.isSameOrAfter(e.end)) continue;
                             event = e;
                             break;
                         }
@@ -94,7 +94,7 @@ const Rooms = observer(class Rooms extends React.Component {
                         let event;
 
                         for (let e of cal.events) {
-                            if (moment().isSameOrAfter(e.end)) continue;
+                            if (momNow.isSameOrAfter(e.end)) continue;
                             event = e;
                             break;
                         }

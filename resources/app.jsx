@@ -10,9 +10,9 @@ import WeatherDetail from './js/weather/WeatherDetail';
 import Viewer from './js/viewer/Viewer';
 import Error from './Error';
 
-import CalendarStore from './js/models/CalendarStore';
-import WeatherStore from './js/models/WeatherStore';
-import TrainDelaysStore from './js/models/TrainDelaysStore';
+import CalendarStore from './js/models/CalendarStoreDemo';
+import WeatherStore from './js/models/WeatherStoreDemo';
+import TrainDelaysStore from './js/models/TrainDelaysStoreDemo';
 
 import "./sass/_reboot.scss";
 import "./sass/style.scss";
@@ -21,6 +21,7 @@ import "./sass/style.scss";
 global.moment = require('moment-timezone');
 moment.tz.setDefault("Asia/Tokyo");
 moment.locale("ja");
+global.momNow = moment('2019-05-01 11:01:30');
 
 const calendarStore = new CalendarStore();
 const weatherStore = new WeatherStore();

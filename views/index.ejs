@@ -23,15 +23,10 @@
         window.addEventListener('load', function () {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register("/serviceWorker.js")
-                .then(function (registration) {
-                    console.log("serviceWorker registed.");
-                }).catch(function (error) {
-                    console.warn("serviceWorker error.", error);
-                });
+                .then(function (registration) {}).catch(function (error) {});
             }
         });
     </script>
-    <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="/main.js"></script>
 </body>
 
