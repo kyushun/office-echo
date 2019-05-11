@@ -147,45 +147,54 @@ const Notification = observer(class Notification extends React.Component {
             <div className="header-info">
                 <div className="header-info-frame">
                     <div id="header-info-title" className="header-info-title-wrapper">
+                        <div className="header-info-title header-info-title-anim-in">Roomee</div>
+                        <div className="header-info-title">注意事項</div>
                         {(() => {
                             if (currently.length > 0) {
                                 return (
-                                    <div className="header-info-title header-info-title-anim-out">現在の天気</div>
+                                    <div className="header-info-title">現在の天気</div>
                                 );
                             }
                         })()}
                         {(() => {
                             if (hourly.length > 0) {
                                 return (
-                                    <div className="header-info-title header-info-title-anim-out">今後の天気</div>
+                                    <div className="header-info-title">今後の天気</div>
                                 );
                             }
                         })()}
                         {(() => {
                             if (daily.length > 0) {
                                 return (
-                                    <div className="header-info-title header-info-title-anim-out">一週間の天気</div>
+                                    <div className="header-info-title">一週間の天気</div>
                                 );
                             }
                         })()}
                         {(() => {
-                            if (delays.length > 0) {
+                            if (delays.length > 1) {
                                 return (
-                                    <div className="header-info-title header-info-title-anim-out">鉄道遅延</div>
+                                    <div className="header-info-title">路線遅延情報</div>
                                 );
                             }
                         })()}
+                        {[...Array(Math.ceil(delays.length / 4))].map((v, idx) => {
+                            return (
+                                <div key={'th-' + idx} className="header-info-title">遅延路線 {idx + 1}</div>
+                            );
+                        })}
                         {this.state.notifications.map((_n) => {
                             return (
-                                <div key={_n.title + _n.content} className="header-info-title header-info-title-anim-out">{_n.title}</div>
+                                <div key={_n.title + _n.content} className="header-info-title">{_n.title}</div>
                             );
                         })}
                     </div>
                     <div id="header-info-content" className="header-info-content-wrapper">
+                        <div className="header-info-content header-info-content-anim-in">これは会議室一覧表示サイネージシステムのデモです</div>
+                        <div className="header-info-content"><span className="three-quarters-size">デモ内の情報は</span>すべて架空のものであり実在するデータではありません</div>
                         {(() => {
                             if (currently.length > 0) {
                                 return (
-                                    <div className="header-info-content header-info-content-anim-out">
+                                    <div className="header-info-content">
                                         <span className="three-quarters-size">{currently[0].summary}</span>&nbsp;
                                         <i className={`icon wi wi-forecast-io-${currently[0].icon}`} />&nbsp;&nbsp;
                                         <span className="three-quarters-size">気温&nbsp;</span>{Math.round(currently[0].temperature)}&deg;C&nbsp;&nbsp;
@@ -199,7 +208,7 @@ const Notification = observer(class Notification extends React.Component {
                         {(() => {
                             if (hourly.length > 0) {
                                 return (
-                                    <div className="header-info-content header-info-content-anim-out">
+                                    <div className="header-info-content">
                                         3<span className="three-quarters-size">時間後</span>&nbsp;<i className={`icon wi wi-forecast-io-${hourly[4].icon}`} />&nbsp;&nbsp;
                                         6<span className="three-quarters-size">時間後</span>&nbsp;<i className={`icon wi wi-forecast-io-${hourly[7].icon}`} />&nbsp;&nbsp;
                                         9<span className="three-quarters-size">時間後</span>&nbsp;<i className={`icon wi wi-forecast-io-${hourly[10].icon}`} />&nbsp;&nbsp;
@@ -211,7 +220,7 @@ const Notification = observer(class Notification extends React.Component {
                         {(() => {
                             if (daily.length > 0) {
                                 return (
-                                    <div className="header-info-content header-info-content-anim-out">
+                                    <div className="header-info-content">
                                         {[...Array(4)].map((val, i) => {
                                             const index = i + 1;
                                             return (
@@ -230,20 +239,31 @@ const Notification = observer(class Notification extends React.Component {
                             }
                         })()}
                         {(() => {
-                            if (delays.length > 0) {
+                            if (delays.length > 1) {
                                 return (
-                                    <div className="header-info-content header-info-content-anim-out">
-                                        {delays.map((line, i) => {
-                                            return (i != 0 ? '・' : '') + line.name;
-                                        })}
-                                        <span className="three-quarters-size">で遅延が発生しています</span>
+                                    <div className="header-info-content">
+                                        {delays[0].name}<span className="three-quarters-size">など</span>
+                                        {delays.length}の路線で遅延
+                                        <span className="three-quarters-size">が発生しています</span>
                                     </div>
                                 );
                             }
                         })()}
+                        {[...Array(Math.ceil(delays.length / 4))].map((v, idx) => {
+                            let trains = '';
+                            for (let i = 0; i < 4; i++) {
+                                if (delays[4 * idx + i]) {
+                                    if (i != 0) trains += ' / ';
+                                    trains += delays[4 * idx + i].name;
+                                }
+                            }
+                            return (
+                                <div key={'tc-' + idx} className="header-info-content">{trains}</div>
+                            );
+                        })}
                         {this.state.notifications.map((_n) => {
                             return (
-                                <div key={_n.content} className="header-info-content header-info-content-anim-out">{_n.content}</div>
+                                <div key={_n.content} className="header-info-content">{_n.content}</div>
                             );
                         })}
                     </div>

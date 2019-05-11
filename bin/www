@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-global.config = require('config');
+//global.config = require('config');
 global.moment = require('moment-timezone');
 moment.tz.setDefault("Asia/Tokyo");
 global.myconsole = require('../routes/lib/consoleWriter');
@@ -37,7 +37,7 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-var io = require('../socket')(server);
+//var io = require('../socket')(server);
 
 server.listen(port, '127.0.0.1');
 server.on('error', onError);

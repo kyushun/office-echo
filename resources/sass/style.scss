@@ -220,12 +220,16 @@ hr {
     overflow: hidden;
 }
 .header-info-title {
+    position: absolute;
+    opacity: 0;
     color: white;
     font-size: 1rem;
     font-weight: bold;
     text-align: center;
 }
 .header-info-title-anim-in {
+    position: relative;
+    opacity: 1;
     display: block !important;
     animation : fadeIn 1s ease-in-out;
 }
@@ -240,6 +244,7 @@ hr {
     max-width: 80%;
 }
 .header-info-content {
+    display: none;
     min-width: 100%;
     padding: 0 .5rem;
     font-weight: bold;
@@ -249,10 +254,12 @@ hr {
     z-index: 1;
 }
 .header-info-content-anim-in {
+    display: block;
     animation: swipeIn 3s ease;
 }
 .header-info-content-anim-out {
     position: absolute;
+    display: block;
     top: 0;
     max-width: 100%;
     transform: translateX(-110%);
