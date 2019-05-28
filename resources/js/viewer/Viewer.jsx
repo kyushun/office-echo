@@ -9,7 +9,8 @@ const Viewer = observer(class Viewer extends React.Component {
         super(props);
         this.state = {
             modalCalId: null,
-            lastUpdated: new Date()
+            lastUpdated: new Date(),
+            searchModalOpen: false
         };
     }
 
@@ -38,15 +39,25 @@ const Viewer = observer(class Viewer extends React.Component {
     }
 
     onModalOpen = (id) => {
-        this.setState({
-            modalCalId: id
-        });
+        if (!this.state.searchModalOpen) {
+            this.setState({
+                modalCalId: id
+            });
+        }
     }
 
     onModalClose = () => {
         this.setState({
             modalCalId: null
         });
+    }
+
+    onSearchModalOpen = () => {
+        if (!this.state.modalCalId) {
+            this.setState({
+                searchModalOpen: !this.state.searchModalOpen
+            });
+        }
     }
 
     render() {
@@ -123,6 +134,11 @@ const Viewer = observer(class Viewer extends React.Component {
                     );
                 })}
                 <RoomDetails id={this.state.modalCalId} calendarStore={this.props.calendarStore} onModalClose={this.onModalClose} />
+                <div className="v-room-recom-btn" onClick={this.onSearchModalOpen}>
+                    <i className="fas fa-search"></i>
+                    <div>今すぐ使える<br /><strong>空き会議室を検索</strong></div>
+                </div>
+                <SearchRooms open={this.state.searchModalOpen} onHandleClose={this.onSearchModalOpen} calendarStore={this.props.calendarStore} />
             </div>
         );
     }
@@ -130,11 +146,93 @@ const Viewer = observer(class Viewer extends React.Component {
 
 export default withRouter(Viewer);
 
+const SearchRooms = observer(class SearchRooms extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchTime: 60
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.open && nextProps.open) {
+            this.closeInterval = setTimeout(() => {
+                this.props.onHandleClose();
+            }, 30 * 1000);
+            this.setState({
+                searchTime: 60
+            });
+        } else if (this.props.open && !nextProps.open) {
+            clearTimeout(this.closeInterval);
+        }
+    }
+
+    setTime(time) {
+        this.setState({
+            searchTime: time
+        });
+    }
+
+    render() {
+        const cals = toJS(this.props.calendarStore.calendars);
+
+        if (this.props.open) {
+            return (
+                <div className="v-room-recom-card">
+                    <div className="v-room-recom-card-title">空き会議室</div>
+                    <div className="v-room-recom-time-desc">利用予定時間</div>
+                    <div className="v-room-recom-time">
+                        <div className={this.state.searchTime == 30 ? 'active' : ''} onClick={this.setTime.bind(this, 30)}>30分</div>
+                        <div className={this.state.searchTime == 60 ? 'active' : ''} onClick={this.setTime.bind(this, 60)}>60分</div>
+                        <div className={this.state.searchTime == 120 ? 'active' : ''} onClick={this.setTime.bind(this, 120)}>120分</div>
+                        <div className={!this.state.searchTime ? 'active' : ''} onClick={this.setTime.bind(this, null)}>終日</div>
+                    </div>
+                    <div className="v-room-recom-desc">
+                        ここでは会議室の予約はできません。<br />
+                        利用する場合は必ず予約をしてください。
+                        </div>
+                    <div className="v-room-recom-rooms">
+                        {cals.map((cal) => {
+                            const { currentEvent, followEvents } = this.props.calendarStore.getNormalizedEvents(cal.id);
+                            if (!currentEvent) {
+                                if ((!this.state.searchTime && followEvents.length == 0)
+                                    || (this.state.searchTime &&
+                                        (followEvents.length == 0 || moment(followEvents[0].start).diff(moment(), 'minutes') > this.state.searchTime))) {
+                                    return (
+                                        <div key={cal.id}>
+                                            <div className="v-room-recom-room-summary">{cal.summary}</div>
+                                            {(() => {
+                                                if (followEvents.length > 0) {
+                                                    return followEvents.map(fe => {
+                                                        return (
+                                                            <div key={fe.id} className="v-room-recom-room-next">
+                                                                {moment(fe.start).format('HH:mm') + ' - '}{fe.summary || "タイトル未設定"}
+                                                            </div>
+                                                        );
+                                                    });
+                                                } else {
+                                                    return <div className="v-room-recom-room-next">今後の予定なし</div>
+                                                }
+                                            })()}
+                                        </div>
+                                    );
+                                }
+                            }
+                        })}
+                    </div>
+                </div>
+            );
+        } else {
+            return <React.Fragment></React.Fragment>
+        }
+    }
+});
+
 const RoomDetails = observer(class RoomDetails extends React.Component {
     constructor(props) {
         super(props);
     }
-    
+
     componentDidUpdate = () => {
         clearTimeout(this.autoCloseTimeout);
         if (this.props.id != null) {
