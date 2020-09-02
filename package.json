@@ -36,7 +36,7 @@
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.16.0",
-    "googleapis": "^34.0.0",
+    "googleapis": "^39.1.0",
     "http-errors": "~1.6.2",
     "mobx": "^5.5.2",
     "mobx-react": "^5.3.5",
